@@ -30,9 +30,6 @@
                     <div class="form-field">
                         <input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
                     </div>
-                    <div class="form-field">
-                        <input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
-                    </div>
                 </div>
                 <hr>
                 <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
@@ -42,7 +39,7 @@
         <br>
         <div class="box-element hidden" id="payment-info">
             <small>Paypal Options</small>
-            <button id="make-payment">Make Payment</button>
+            <button id="make-payment" class="btn btn-outline-dark">Make Payment</button>
         </div>
 	</div>
 
@@ -113,16 +110,16 @@
             'zipcode':null,
         }
 
+        if(user == 'AnomymouseUser'){
+            userFormData.name = form.name.value
+            userFormData.email = form.email.value
+        }
+
         if(shipping != 'False'){
             shippingInfo.address = form.address.value
             shippingInfo.city = form.city.value
             shippingInfo.state = form.state.value
             shippingInfo.zipcode = form.zipcode.value
-        }
-
-        if(user == 'AnomymouseUser'){
-            userFormData.name = form.name.value
-            userFormData.email = form.email.value
         }
 
         var url = '/process_order/'
@@ -138,6 +135,8 @@
         .then((data) => {
             console.log('Success:', data);
             alert('Transaction completed');
+        cart = {}
+        document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
             window.location.href = "{% url 'store' %}"
         })
     }
