@@ -12,7 +12,7 @@
                     <th><h5>Items: <strong>{{order.get_cart_items}}</strong></h5></th>
                     <th><h5>Total:<strong> ${{order.get_cart_total|floatformat:2}}</strong></h5></th>
                     <th>
-                        <a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+                        <a style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
                     </th>
                 </tr>
             </table>
@@ -22,7 +22,7 @@
             <div class="cart-row">
                 <div style="flex:2"></div>
                 <div style="flex:2"><strong>Item</strong></div>
-                <div style="flex:1"><strong>Price</strong></div>
+                <div style="flex:2"><strong>Price</strong></div>
                 <div style="flex:1"><strong>Quantity</strong></div>
                 <div style="flex:1"><strong>Total</strong></div>
             </div>
@@ -31,7 +31,7 @@
             <div class="cart-row">
                 <div style="flex:2"><img class="row-image" src="{{item.product.imageURL}}"></div>
                 <div style="flex:2"><p>{{item.product.name}}</p></div>
-                <div style="flex:1"><p>${{item.product.price|floatformat:2}}</p></div>
+                <div style="flex:3"><p>${{item.product.price|floatformat:2}}</p></div>
                 <div style="flex:1">
                     <p class="quantity">x{{item.quantity}}</p>
                     <div class="quantity">

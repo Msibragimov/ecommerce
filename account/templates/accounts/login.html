@@ -1,0 +1,35 @@
+{% extends 'store/main.html' %}
+{% load static %}
+
+{% block content %}
+
+<body class="auth-body">
+    <div class="container">
+        <div class="login">
+            <h2 class="col-sm-12 text-center">Login</h2>
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert" style="margin-top: 4%;"> {{message}}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+                <div class="col-md-12">
+                    <label for="email">Email</label>
+                    {{login_form.username}}
+                    <br>
+                    <label for="password">Password</label>
+                    {{login_form.password}}
+                    <br>
+                    <button class="btn btn-block btn-primary" type="submit">Log In</button>
+                </div>
+                <p class="col-sm-12 text-center">Don't have an account? <a class="text-info" href="{% url 'register' %}">Create one.</a></p>
+            </form>
+        </div>
+    </div>
+</body>
+
+
+{% endblock %}

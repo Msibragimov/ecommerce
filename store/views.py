@@ -4,7 +4,7 @@ import json
 import datetime
 
 from .models import *
-from .utils import cartData, cookieCart, guestOrder
+from .utils import cartData, guestOrder
 
 
 def store(request):
@@ -13,7 +13,8 @@ def store(request):
     cartItems = data['cartItems']
 
     products = Product.objects.all()
-    context = {'products': products, 'cartItems': cartItems}
+    categories = Category.objects.filter(parent=None)
+    context = {'products': products, 'cartItems': cartItems, 'categories': categories}
     return render(request, 'store/store.html', context)
 
 
@@ -70,13 +71,17 @@ def processOrder(request):
     data = json.loads(request.body)
 
     if request.user.is_authenticated:
-        customer = request.user.customer
+        customer, created = Customer.objects.get_or_create(
+            user=request.user, 
+            name=data['user-form']['name'],
+            phone=data['user-form']['phone']
+        )
         order, created = Order.objects.get_or_create(
             customer=customer, complete=False)
     else:
         customer, order = guestOrder(request, data)
 
-    total = float(data['form']['total'])
+    total = float(data['user-form']['total'])
     order.transaction_id = transaction_id
 
     if total == order.get_cart_total:
@@ -87,9 +92,10 @@ def processOrder(request):
         ShippingAddress.objects.create(
             customer=customer,
             order=order,
-            address=data['shipping']['address'],
+            country=data['shipping']['country'],
             city=data['shipping']['city'],
-            state=data['shipping']['state'],
+            address=data['shipping']['address'],
+            ex_address=data['shipping']['ex_address'],
             zipcode=data['shipping']['zipcode']
         )
 
