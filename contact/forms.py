@@ -8,14 +8,15 @@ class ContactForm(forms.ModelForm):
         model = Contact
         fields = ['name','surname', 'email', 'phone_number', 'message']
     
-    def validate_phone_number(self, value):
-        validate_number(value)
 
-    def validate_name(self, value):
-        validate_name_or_surname(value)
-    
-    def validate_surname(self, value):
-        validate_name_or_surname(value)
-    
+    def clean(self):
+        cleaned_data = super().clean()
+        phone_number = cleaned_data.get('phone_number')
+        name = cleaned_data.get('name')
+        surname = cleaned_data.get('surname')
+        validate_number(phone_number)
+        validate_name_or_surname(name)
+        validate_name_or_surname(surname)
+        return cleaned_data    
     
     
