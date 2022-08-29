@@ -30,7 +30,8 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = os.environ['DEBUG'].lower() == 'true'
 
 
-ALLOWED_HOSTS = json.loads(os.environ['ALLOWED_HOSTS'])
+# ALLOWED_HOSTS = json.loads(os.environ['ALLOWED_HOSTS'])
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -42,7 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 3rd party
+
+    # local
     'store.apps.StoreConfig',
+    'contact.apps.ContactConfig',
 ]
 
 MIDDLEWARE = [
