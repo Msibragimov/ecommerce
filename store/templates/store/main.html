@@ -62,16 +62,16 @@
             {% for category in categories %}
             {% if not category.children.all %}
             <li class="nav-item active">
-              <a class="nav-link" href="#">Store<span class="sr-only">{{category.title}}</span></a>
+              <a class="nav-link" href="{% url 'category' category.id %}">Store<span class="sr-only">{{category.title}}</span></a>
             </li>
             {% else %}
             <li class="nav-item dropdown active">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="{% url 'category' category.id %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {{category.title}}
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 {% for obj in category.children.all %}
-                <a class="dropdown-item" href="#">{{obj.title}}</a>
+                <a class="dropdown-item" href="{% url 'category' category.id %}">{{obj.title}}</a>
                 {% endfor %}                
               </div>
             </li>

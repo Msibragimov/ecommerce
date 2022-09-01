@@ -1,0 +1,21 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-4 box-element">
+        <img src="{{product.imageURL}}" style="width: 100%;" alt="img">
+      </div>
+      <div class="col-md-6 box-element">
+        <div><h1>{{product.name}}</h1></div>
+        <hr>
+        <div><p>{{product.about}}</p></div>
+        <hr>
+        <button data-product="{{product.id}}" data-action="add" class="update-cart btn btn-primary add-btn">Add to Cart</button>
+        <h4 style="display: inline-block;"><strong>{{product.price}} {{product.currency}}</strong></h4>
+      </div>
+    </div>
+</div>
+
+{% endblock content %}

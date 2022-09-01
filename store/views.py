@@ -1,10 +1,33 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
-import json
 import datetime
+import json
 
 from .models import *
 from .utils import cartData, guestOrder
+
+
+def product_detail(request, pk):
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    product = Product.objects.get(id=pk)
+    product.viewed += 1
+    product.save()
+    context = {'product':product, 'cartItems': cartItems}
+    return render(request, 'store/product.html', context)
+
+
+def filter_by_category(request, pk):
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+
+    category = get_object_or_404(Category, pk=pk, parent=None)
+    products = Product.objects.filter(category=category)
+    context = {'products': products, 'cartItems': cartItems, 'category': category}
+    return render(request, 'store/store.html', context)
 
 
 def store(request):
@@ -12,8 +35,8 @@ def store(request):
     data = cartData(request)
     cartItems = data['cartItems']
 
-    products = Product.objects.all()
     categories = Category.objects.filter(parent=None)
+    products = Product.objects.all()
     context = {'products': products, 'cartItems': cartItems, 'categories': categories}
     return render(request, 'store/store.html', context)
 

@@ -37,12 +37,24 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    UZBEKISTAN = 'Sum'
+    USA = '$'
+    CURRENCY = [
+        (UZBEKISTAN,'UZS'),
+        (USA, 'USD'),
+    ]
+
     name = models.CharField(max_length=200, null=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True)
-    price = models.DecimalField(max_digits=7, decimal_places=2)
-    digital = models.BooleanField(default=False, null=True, blank=False)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, blank=True)
+    price = models.IntegerField()
+    currency = models.CharField(max_length=50, choices=CURRENCY, default=UZBEKISTAN)
     image = models.ImageField(null=True, blank=True)
     available = models.BooleanField(default=True)
+    viewed = models.IntegerField(default=0)
+    about = models.TextField(blank=True)
+
+    class Meta:
+        ordering = ['-viewed']
 
     def __str__(self):
         return self.name
