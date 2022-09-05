@@ -60,8 +60,9 @@ def checkout(request):
     items = data['items']
     order = data['order']
     cartItems = data['cartItems']
+    categories = Category.objects.filter(parent=None)
 
-    context = {'items': items, 'order': order, 'cartItems': cartItems}
+    context = {'items': items, 'order': order, 'cartItems': cartItems, 'categories': categories}
     return render(request, 'store/checkout.html', context)
 
 
