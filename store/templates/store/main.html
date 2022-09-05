@@ -15,39 +15,39 @@
     if (document.cookie && document.cookie !== '') {
         var cookies = document.cookie.split(';');
         for (let i = 0; i < cookies.length; i++) {
-            var cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
+          var cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
         }
-    }
-    return cookieValue;
-  }
-  var csrftoken = getToken('csrftoken');
-
-  function getCookie(name) {
-    var cookieArr = document.cookie.split(";");
-
-    for(var i = 0; i < cookieArr.length; i++) {
-      var cookiePair = cookieArr[i].split("=")
-
-      if(name == cookiePair[0].trim()) {
-        return decodeURIComponent(cookiePair[1])
       }
+      return cookieValue;
     }
-    return null
-  }
+    var csrftoken = getToken('csrftoken');
 
-  var cart = JSON.parse(getCookie('cart'))
-  if(cart == undefined) {
-    cart = {}
-    console.log('Cart was created!')
-    document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
-  }
+    function getCookie(name) {
+      var cookieArr = document.cookie.split(";");
 
-  console.log('Cart:', cart)
+      for(var i = 0; i < cookieArr.length; i++) {
+        var cookiePair = cookieArr[i].split("=")
+
+        if(name == cookiePair[0].trim()) {
+          return decodeURIComponent(cookiePair[1])
+        }
+      }
+      return null
+    }
+
+    var cart = JSON.parse(getCookie('cart'))
+    if(cart == undefined) {
+      cart = {}
+      console.log('Cart was created!')
+      document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+    }
+
+    console.log('Cart:', cart)
   </script>
 </head>
 <body>
@@ -59,24 +59,24 @@
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-            {% for category in categories %}
+          {% for category in categories %}
             {% if not category.children.all %}
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'category' category.id %}">Store<span class="sr-only">{{category.title}}</span></a>
+              <a class="nav-link" href="{% url 'category' category.slug %}">Store<span class="sr-only">{{category.title}}</span></a>
             </li>
             {% else %}
-            <li class="nav-item dropdown active">
-              <a class="nav-link dropdown-toggle" href="{% url 'category' category.id %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item has-dropdown is-hoverable active">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
                 {{category.title}}
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                {% for obj in category.children.all %}
-                <a class="dropdown-item" href="{% url 'category' category.id %}">{{obj.title}}</a>
+                {% for subcategory in category.children.all %}
+                <a class="dropdown-item" href="{% url 'category' subcategory.slug %}">{{subcategory.title}}</a>
                 {% endfor %}                
               </div>
             </li>
             {% endif %}
-            {% endfor %}
+          {% endfor %}
           </ul>
           
           <form class="form-inline my-2 my-lg-0" style="margin-right: 5%;">

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 
@@ -18,6 +19,7 @@ class Customer(models.Model):
 class Category(models.Model):
     parent = models.ForeignKey('self', related_name='children', on_delete=models.PROTECT, blank=True, null=True)
     title = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100, unique=True)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -33,21 +35,18 @@ class Category(models.Model):
         while k is not None:
             full_path.append(k.title)
             k = k.parent
-        return ' -> '.join(full_path[::-1]) 
+        return ' -> '.join(full_path[::-1])
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)
 
 
 class Product(models.Model):
-    UZBEKISTAN = 'Sum'
-    USA = '$'
-    CURRENCY = [
-        (UZBEKISTAN,'UZS'),
-        (USA, 'USD'),
-    ]
-
     name = models.CharField(max_length=200, null=True)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     price = models.IntegerField()
-    currency = models.CharField(max_length=50, choices=CURRENCY, default=UZBEKISTAN)
     image = models.ImageField(null=True, blank=True)
     available = models.BooleanField(default=True)
     viewed = models.IntegerField(default=0)

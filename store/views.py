@@ -19,15 +19,17 @@ def product_detail(request, pk):
     return render(request, 'store/product.html', context)
 
 
-def filter_by_category(request, pk):
+def category_detail(request, slug):
 
     data = cartData(request)
     cartItems = data['cartItems']
 
-    category = get_object_or_404(Category, pk=pk, parent=None)
-    products = Product.objects.filter(category=category)
-    context = {'products': products, 'cartItems': cartItems, 'category': category}
-    return render(request, 'store/store.html', context)
+    category = get_object_or_404(Category, slug=slug)
+    categories = Category.objects.filter(parent=None)
+    category_products = Product.objects.filter(category=category)
+    
+    context = {'products': category_products, 'cartItems': cartItems, 'categories': categories}
+    return render(request, 'store/category.html', context)
 
 
 def store(request):
