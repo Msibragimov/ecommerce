@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'contact.apps.ContactConfig',
     'account.apps.AccountConfig',
-    'django_autoslug',
 ]
 
 MIDDLEWARE = [

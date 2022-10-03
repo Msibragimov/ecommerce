@@ -3,16 +3,25 @@
 {% block content %}
 
 <div class="row">
-    {% for product in products %}
+    {% for category in categories %}
     <div class="col-lg-4">
-        <img class="thumbnail" src="{{product.imageURL}}">
+        <img class="thumbnail" src="{{category.imageURL}}">
         <div class="box-element product">
-            <h6><strong>{{product.name}}</strong></h6>
+            <h6><strong>{{category.title}}</strong></h6>
             <hr>
-            <button data-product="{{product.id}}" data-action="add" class="update-cart btn btn-outline-secondary add-btn">Add to Cart</button>
-            <a class="btn btn-outline-success" href="{% url 'product' product.id %}">View</a>
-            <h5 style="display: inline-block; float: right;"><strong>{{product.price}} som</strong></h5>
-
+            <p class="overflow-ellipsis">{{category.description}}</p>
+            <div class="btn-group">
+                {% if not category.children.all %}
+                <a class="btn btn-outline-success" href="{% url 'category_detail' category.slug %}">View</a>
+                {% else %}
+                <button type="button" class="btn btn-outline-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sub-Categories</button>
+                <div class="dropdown-menu">
+                    {% for subcategory in category.children.all %}
+                    <a class="dropdown-item" href="{% url 'category_detail' subcategory.slug %}">{{subcategory.title}}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
         </div>
     </div>
     {% endfor %}

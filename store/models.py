@@ -18,6 +18,7 @@ class Customer(models.Model):
 
 class Category(models.Model):
     parent = models.ForeignKey('self', related_name='children', on_delete=models.PROTECT, blank=True, null=True)
+    image = models.ImageField(null=True, blank=True)
     title = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True)
     description = models.TextField(blank=True)

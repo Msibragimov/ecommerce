@@ -52,31 +52,17 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="{% url 'store' %}">Ecom</a>
+        <a class="navbar-brand" href="{% url 'store' %}">Rubik</a>
+        
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
-          {% for category in categories %}
-            {% if not category.children.all %}
             <li class="nav-item active">
-              <a class="nav-link" href="{% url 'category' category.slug %}">Store<span class="sr-only">{{category.title}}</span></a>
+              <a class="nav-link" href="{% url 'category_list' %}">Categories</a>
             </li>
-            {% else %}
-            <li class="nav-item has-dropdown is-hoverable active">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
-                {{category.title}}
-              </a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                {% for subcategory in category.children.all %}
-                <a class="dropdown-item" href="{% url 'category' subcategory.slug %}">{{subcategory.title}}</a>
-                {% endfor %}                
-              </div>
-            </li>
-            {% endif %}
-          {% endfor %}
           </ul>
           
           <form class="form-inline my-2 my-lg-0" style="margin-right: 5%;">

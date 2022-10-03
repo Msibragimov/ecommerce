@@ -15,8 +15,18 @@ def product_detail(request, pk):
     product = Product.objects.get(id=pk)
     product.viewed += 1
     product.save()
-    context = {'product':product, 'cartItems': cartItems}
+    context = {'product': product, 'cartItems': cartItems}
     return render(request, 'store/product.html', context)
+
+
+def category_list(request):
+
+    data = cartData(request)
+    cartItems = data['cartItems']
+    categories = Category.objects.filter(parent=None)
+
+    context = {'categories': categories, 'cartItems': cartItems}
+    return render(request, 'store/category.html', context)
 
 
 def category_detail(request, slug):
@@ -26,10 +36,10 @@ def category_detail(request, slug):
 
     category = get_object_or_404(Category, slug=slug)
     categories = Category.objects.filter(parent=None)
-    category_products = Product.objects.filter(category=category)
+    category_products = Product.objects.filter(category=category, available=True)
     
-    context = {'products': category_products, 'cartItems': cartItems, 'categories': categories}
-    return render(request, 'store/category.html', context)
+    context = {'category_products': category_products, 'cartItems': cartItems, 'categories': categories}
+    return render(request, 'store/category_detail.html', context)
 
 
 def store(request):
@@ -38,7 +48,7 @@ def store(request):
     cartItems = data['cartItems']
 
     categories = Category.objects.filter(parent=None)
-    products = Product.objects.all()
+    products = Product.objects.filter(available=True)
     context = {'products': products, 'cartItems': cartItems, 'categories': categories}
     return render(request, 'store/store.html', context)
 
